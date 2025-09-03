@@ -6,7 +6,10 @@
 - `Organization` is featured on the menu bar itself.
 - Click to open view and click items to copy their values.
 
-# Installation
+# Install
+- Download lataest release over here ==>
+
+# Build from source
 - `just` is required: `brew install just`
 - Build: `just build`
 - Compile: `just bundle`
