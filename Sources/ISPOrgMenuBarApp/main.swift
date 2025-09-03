@@ -117,7 +117,7 @@ struct MenuBarView: View {
     }
 }
 
-final class NetworkMonitor: ObservableObject {
+final class NetworkMonitor: ObservableObject, @unchecked Sendable {
     @Published var currentOrg: String = "Loading..."
     @Published var currentIP: String = "Loading..."
     @Published var city: String = ""; @Published var country: String = ""
@@ -151,33 +151,44 @@ final class NetworkMonitor: ObservableObject {
         fetchIPInfo()
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
-            self?.fetchIPInfo()
+            Task { @MainActor in
+                self?.fetchIPInfo()
+            }
         }
     }
 
     func fetchIPInfo() {
         guard let url = URL(string: "https://ipinfo.io/json") else { return }
 
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             if let error = error {
-                DispatchQueue.main.async { self.currentOrg = "Error: \(error.localizedDescription)"; self.updateTimestamp() }
+                Task { @MainActor in
+                    self?.currentOrg = "Error: \(error.localizedDescription)"
+                    self?.updateTimestamp()
+                }
                 return
             }
             guard let data = data else {
-                DispatchQueue.main.async { self.currentOrg = "No data"; self.updateTimestamp() }
+                Task { @MainActor in
+                    self?.currentOrg = "No data"
+                    self?.updateTimestamp()
+                }
                 return
             }
             do {
                 let ipInfo = try JSONDecoder().decode(IPInfo.self, from: data)
-                DispatchQueue.main.async {
-                    self.currentOrg = ipInfo.org
-                    self.currentIP = ipInfo.ip
-                    self.city = ipInfo.city
-                    self.country = ipInfo.country
-                    self.updateTimestamp()
+                Task { @MainActor in
+                    self?.currentOrg = ipInfo.org
+                    self?.currentIP = ipInfo.ip
+                    self?.city = ipInfo.city
+                    self?.country = ipInfo.country
+                    self?.updateTimestamp()
                 }
             } catch {
-                DispatchQueue.main.async { self.currentOrg = "Parse error"; self.updateTimestamp() }
+                Task { @MainActor in
+                    self?.currentOrg = "Parse error"
+                    self?.updateTimestamp()
+                }
             }
         }
         task.resume()
