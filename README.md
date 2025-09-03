@@ -2,12 +2,11 @@
 
 ![example.png](example.png)
 
+[Download release](https://github.com/jensbech/isp-name/releases)
+
 # Usage
 - `Organization` is featured on the menu bar itself.
 - Click to open view and click items to copy their values.
-
-# Install
-- Download lataest release: https://github.com/jensbech/isp-name/releases
 
 # Build from source
 - `just` is required: `brew install just`
