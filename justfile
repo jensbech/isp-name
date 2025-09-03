@@ -1,5 +1,5 @@
 app_name := "ISPOrgMenuBarApp"
-version := "1.0.0"
+version := "1.1.0"
 build_dir := ".build/arm64-apple-macosx/release"
 release_dir := "release/" + version
 app_bundle := release_dir + "/" + app_name + ".app"
@@ -16,10 +16,6 @@ bundle: build
 
 zip: bundle
     cd {{release_dir}} && zip -r {{app_name}}-{{version}}-macOS.zip {{app_name}}.app
-
-release: bundle
-    cd {{release_dir}} && zip -r {{app_name}}-{{version}}-macOS.zip {{app_name}}.app
-    cd {{release_dir}} && tar -czf {{app_name}}-{{version}}-macOS.tar.gz {{app_name}}.app
 
 install: bundle
     cp -R {{app_bundle}} /Applications/

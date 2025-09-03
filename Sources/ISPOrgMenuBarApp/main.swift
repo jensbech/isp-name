@@ -140,7 +140,7 @@ final class NetworkMonitor: ObservableObject, @unchecked Sendable {
     @Published var currentOrg: String = "Loading..."
     @Published var currentIP: String = "Loading..."
     @Published var city: String = ""; @Published var country: String = ""
-    @Published var lastUpdated: String = ""
+    @Published var lastUpdated: String = "Never"
     
     var shortOrg: String {
         if currentOrg.starts(with: "AS") {
@@ -167,6 +167,7 @@ final class NetworkMonitor: ObservableObject, @unchecked Sendable {
     }
 
     func startMonitoring() {
+        updateTimestamp()
         fetchIPInfo()
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
