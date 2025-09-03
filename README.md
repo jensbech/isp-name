@@ -1,4 +1,4 @@
-This is a macOS menu bar app to show and copy IP info
+# This is a macOS menu bar app to show and copy IP info
 
 ![example.png](example.png)
 
