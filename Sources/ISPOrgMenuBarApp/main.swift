@@ -14,6 +14,12 @@ struct MenuBarOrgApp: App {
         }
         .menuBarExtraStyle(.window)
     }
+    
+    init() {
+        let monitor = NetworkMonitor()
+        _networkMonitor = StateObject(wrappedValue: monitor)
+        monitor.startMonitoring()
+    }
 }
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -24,6 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 struct MenuBarView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @AppStorage("launchAtLogin") private var launchAtLogin = false
+    @State private var showCopiedMessage = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -41,6 +48,13 @@ struct MenuBarView: View {
                 dataRow(label: "IP", value: networkMonitor.currentIP)
                 dataRow(label: "Location", value: "\(networkMonitor.city), \(networkMonitor.country)")
                 dataRow(label: "Updated", value: networkMonitor.lastUpdated)
+            }
+
+            if showCopiedMessage {
+                Text("Copied to clipboard!")
+                    .font(.caption)
+                    .foregroundColor(.green)
+                    .transition(.opacity)
             }
 
             Divider()
@@ -68,7 +82,6 @@ struct MenuBarView: View {
         .padding()
         .frame(width: 280)
         .onAppear { 
-            networkMonitor.startMonitoring()
             if #available(macOS 13.0, *) {
                 launchAtLogin = SMAppService.mainApp.status == .enabled
             }
@@ -86,17 +99,23 @@ struct MenuBarView: View {
                 .font(.caption)
                 .multilineTextAlignment(.trailing)
                 .textSelection(.enabled)
-                .onTapGesture {
-                    copyToClipboard(value)
-                }
-                .help("Click to copy")
         }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            copyToClipboard(value)
+        }
+        .help("Click to copy \(value)")
     }
 
     private func copyToClipboard(_ text: String) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(text, forType: .string)
+        
+        showCopiedMessage = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            showCopiedMessage = false
+        }
     }
 
     private func setLaunchAtLogin(enabled: Bool) {

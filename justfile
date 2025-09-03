@@ -17,6 +17,10 @@ bundle: build
 zip: bundle
     cd {{release_dir}} && zip -r {{app_name}}-{{version}}-macOS.zip {{app_name}}.app
 
+release: bundle
+    cd {{release_dir}} && zip -r {{app_name}}-{{version}}-macOS.zip {{app_name}}.app
+    cd {{release_dir}} && tar -czf {{app_name}}-{{version}}-macOS.tar.gz {{app_name}}.app
+
 install: bundle
     cp -R {{app_bundle}} /Applications/
 
