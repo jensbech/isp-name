@@ -2,27 +2,28 @@
 
 Simple macOS menu bar app to show the ISP organization name. Useful for quickly verifying if you are on a VPN connection or not.
 
+## Features
+
+- 🌐 Shows your current ISP organization in the menu bar
+- 📍 Displays your IP address and location
+- 🔄 Auto-refreshes every 60 seconds
+- 🚀 Launch at login support
+- 🎯 Spotlight searchable when installed in Applications
+- 🖱️ No dock icon - lives purely in the menu bar
+- ⌨️ Keyboard shortcut (R) to refresh manually
+
 ## Installation
 
-### Homebrew (Recommended)
-```bash
-# Install directly from this repository
-brew install jensbech/isp-name/isp-org-menubar-app
-
-# Or add as a tap first, then install
-brew tap jensbech/isp-name
-brew install isp-org-menubar-app
-```
-
-### Manual Installation
+### Download from Releases (Recommended)
 1. Download the latest release from [GitHub Releases](https://github.com/jensbech/isp-name/releases)
-2. Extract and move to `/usr/local/bin/` or another directory in your PATH
-3. Run: `ISPOrgMenuBarApp`
+2. Extract the `.app` bundle and move it to your Applications folder
+3. The app will appear in your menu bar - look for the ISP indicator
 
 ### Build from Source
 ```bash
 git clone https://github.com/jensbech/isp-name.git
 cd isp-name
-swift build -c release
-.build/arm64-apple-macosx/release/ISPOrgMenuBarApp
+./scripts/build-app-bundle.sh
 ```
+
+The built app will be available at `release/1.0.0/ISPOrgMenuBarApp.app`

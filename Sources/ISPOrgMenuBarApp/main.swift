@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import ServiceManagement
 
 @main
 struct MenuBarOrgApp: App {
@@ -23,6 +24,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
 struct MenuBarView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @AppStorage("launchAtLogin") private var launchAtLogin = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -56,10 +58,23 @@ struct MenuBarView: View {
                     NSApplication.shared.terminate(nil)
                 }
             }
+
+            Divider()
+
+            Toggle("Launch at Login", isOn: $launchAtLogin)
+                .onChange(of: launchAtLogin) { newValue in
+                    setLaunchAtLogin(enabled: newValue)
+                }
         }
         .padding()
         .frame(width: 280)
-        .onAppear { networkMonitor.startMonitoring() }
+        .onAppear { 
+            networkMonitor.startMonitoring()
+            // Check current login item status
+            if #available(macOS 13.0, *) {
+                launchAtLogin = SMAppService.mainApp.status == .enabled
+            }
+        }
     }
 
     @ViewBuilder
@@ -73,6 +88,24 @@ struct MenuBarView: View {
                 .font(.caption)
                 .multilineTextAlignment(.trailing)
                 .textSelection(.enabled)
+        }
+    }
+
+    private func setLaunchAtLogin(enabled: Bool) {
+        if #available(macOS 13.0, *) {
+            do {
+                if enabled {
+                    try SMAppService.mainApp.register()
+                } else {
+                    try SMAppService.mainApp.unregister()
+                }
+            } catch {
+                print("Failed to \(enabled ? "enable" : "disable") launch at login: \(error)")
+                // Reset the toggle if it failed
+                DispatchQueue.main.async {
+                    launchAtLogin = !enabled
+                }
+            }
         }
     }
 }
