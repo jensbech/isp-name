@@ -2,7 +2,8 @@
 
 ![example.png](example.png)
 
-[Download release](https://github.com/jensbech/isp-name/releases)
+# Install
+- [Download release](https://github.com/jensbech/isp-name/releases)
 
 # Usage
 - `Organization` is featured on the menu bar itself.
@@ -14,4 +15,3 @@
 - Compile: `just bundle`
 - Zip release: `just zip`
 - Install into your Applications: `just install`
-
