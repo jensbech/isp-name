@@ -18,7 +18,6 @@ struct MenuBarOrgApp: App {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Nothing needed yet
     }
 }
 
@@ -70,7 +69,6 @@ struct MenuBarView: View {
         .frame(width: 280)
         .onAppear { 
             networkMonitor.startMonitoring()
-            // Check current login item status
             if #available(macOS 13.0, *) {
                 launchAtLogin = SMAppService.mainApp.status == .enabled
             }
@@ -88,7 +86,17 @@ struct MenuBarView: View {
                 .font(.caption)
                 .multilineTextAlignment(.trailing)
                 .textSelection(.enabled)
+                .onTapGesture {
+                    copyToClipboard(value)
+                }
+                .help("Click to copy")
         }
+    }
+
+    private func copyToClipboard(_ text: String) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(text, forType: .string)
     }
 
     private func setLaunchAtLogin(enabled: Bool) {
@@ -101,7 +109,6 @@ struct MenuBarView: View {
                 }
             } catch {
                 print("Failed to \(enabled ? "enable" : "disable") launch at login: \(error)")
-                // Reset the toggle if it failed
                 DispatchQueue.main.async {
                     launchAtLogin = !enabled
                 }
@@ -116,10 +123,8 @@ final class NetworkMonitor: ObservableObject {
     @Published var city: String = ""; @Published var country: String = ""
     @Published var lastUpdated: String = ""
     
-    // Computed property for shortened org name in menu bar
     var shortOrg: String {
         if currentOrg.starts(with: "AS") {
-            // Extract just the company name after AS number
             let parts = currentOrg.components(separatedBy: " ")
             if parts.count > 1 {
                 return parts.dropFirst().joined(separator: " ")
@@ -129,7 +134,7 @@ final class NetworkMonitor: ObservableObject {
     }
 
     private var timer: Timer?
-    private let refreshInterval: TimeInterval = 60 // seconds
+    private let refreshInterval: TimeInterval = 60
 
     struct IPInfo: Codable {
         let ip: String

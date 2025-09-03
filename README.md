@@ -6,7 +6,8 @@ Simple macOS menu bar app to show the ISP organization name. Useful for quickly 
 
 - 🌐 Shows your current ISP organization in the menu bar
 - 📍 Displays your IP address and location
-- 🔄 Auto-refreshes every 60 seconds
+- � Click any value to copy it to clipboard
+- �🔄 Auto-refreshes every 60 seconds
 - 🚀 Launch at login support
 - 🎯 Spotlight searchable when installed in Applications
 - 🖱️ No dock icon - lives purely in the menu bar
@@ -23,7 +24,9 @@ Simple macOS menu bar app to show the ISP organization name. Useful for quickly 
 ```bash
 git clone https://github.com/jensbech/isp-name.git
 cd isp-name
-./scripts/build-app-bundle.sh
+just app
 ```
 
 The built app will be available at `release/1.0.0/ISPOrgMenuBarApp.app`
+
+Requires [just](https://github.com/casey/just) command runner.
