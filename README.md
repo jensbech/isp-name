@@ -1,6 +1,12 @@
-# ISPOrgMenuBarApp
+# macOS IP / Organization bar app.
 
-Simple macOS menu bar app to show the ISP organization name. Useful for quickly verifying if you are on a VPN connection or not.
+Simple menu bar app to show and copy IP info.
+
+![demo.png](demo.png)
+
+# Usage
+- `Organization` is featured on the menu bar itself.
+- Click to open view and click items to copy their values.
 
 # Installation
 - `just` is required: `brew install just`
@@ -9,4 +15,3 @@ Simple macOS menu bar app to show the ISP organization name. Useful for quickly 
 - Zip release: `just zip`
 - Install into your Applications: `just install`
 
-![demo.png](demo.png)
