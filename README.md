@@ -2,7 +2,7 @@
 
 Simple menu bar app to show and copy IP info.
 
-![demo.png](demo.png)
+![example.png](demo.png)
 
 # Usage
 - `Organization` is featured on the menu bar itself.
