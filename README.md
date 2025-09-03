@@ -7,7 +7,7 @@
 - Click to open view and click items to copy their values.
 
 # Install
-- Download lataest release over here ==>
+- Download lataest release: https://github.com/jensbech/isp-name/releases
 
 # Build from source
 - `just` is required: `brew install just`
