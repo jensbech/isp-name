@@ -1,5 +1,5 @@
 app_name := "ISPOrgMenuBarApp"
-version := "1.1.0"
+version := "1.1.1"
 build_dir := ".build/arm64-apple-macosx/release"
 release_dir := "release/" + version
 app_bundle := release_dir + "/" + app_name + ".app"

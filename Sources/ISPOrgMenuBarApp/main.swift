@@ -37,7 +37,7 @@ struct MenuBarView: View {
             HStack {
                 Image(systemName: "network")
                     .foregroundColor(.blue)
-                Text("Current Organization")
+                Text("IP Info")
                     .font(.headline)
             }
 
